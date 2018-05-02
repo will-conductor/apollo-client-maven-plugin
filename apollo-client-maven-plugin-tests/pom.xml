@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.coxautodev</groupId>
         <artifactId>apollo-client-maven-plugin-parent</artifactId>
-        <version>1.1.5</version>
+        <version>1.1.6</version>
         <relativePath>..</relativePath>
     </parent>
 
@@ -62,15 +62,42 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.6</version>
+
+                <!-- optional -->
+                <configuration>
+                    <workingDirectory>${project.build.directory}</workingDirectory>
+                    <installDirectory>${project.build.directory}</installDirectory>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <configuration>
+                            <!-- See https://nodejs.org/en/download/ for latest node and npm (lts) versions -->
+                            <nodeVersion>v8.11.1</nodeVersion>
+                            <npmVersion>5.6.0</npmVersion>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>com.coxautodev</groupId>
                 <artifactId>apollo-client-conductor-maven-plugin</artifactId>
-                <version>1.1.5</version>
+                <version>1.1.6</version>
                 <executions>
                     <execution>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
+                            <nodePath>${project.build.directory}/node</nodePath>
                             <basePackage>com.coxautodev.java.graphql.client.tests</basePackage>
                             <customTypeMap>
                                 <Long>java.lang.Long</Long>

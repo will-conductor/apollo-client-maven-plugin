@@ -3,7 +3,7 @@
 
     <groupId>com.coxautodev</groupId>
     <artifactId>apollo-client-maven-plugin-parent</artifactId>
-    <version>1.1.5</version>
+    <version>1.1.6</version>
     <packaging>pom</packaging>
 
     <name>apollo-client-maven-plugin-parent</name>
@@ -158,15 +158,10 @@
         </license>
     </licenses>
     <distributionManagement>
-        <snapshotRepository>
-            <id>bintray</id>
-            <url>https://api.bintray.com/maven/apottere/maven/apollo-client-maven-plugin</url>
-        </snapshotRepository>
-
-        <!-- Released with: mvn release:clean release:prepare release:perform -B -e -Pbintray -->
         <repository>
-            <id>bintray</id>
-            <url>https://api.bintray.com/maven/apottere/maven/apollo-client-maven-plugin/;publish=1</url>
+            <id>cond.nexus.battery-park</id>
+            <name>Release repo on dev01</name>
+            <url>http://nexus-write.infra.us-east-1.conductor.sh/content/repositories/thirdparty</url>
         </repository>
     </distributionManagement>
     <scm>

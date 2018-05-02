@@ -36,6 +36,9 @@ class GraphQLClientMojo: AbstractMojo() {
     @Parameter(property = "basePackage", defaultValue = "com.example.graphql.client")
     private var basePackage: String? = null
 
+    @Parameter(property = "nodePath")
+    private var nodePath: String? = null
+
     @Parameter(property = "introspectionFile", defaultValue = "\${project.basedir}/src/main/graphql/schema.json")
     private var introspectionFile: File? = null
 
@@ -55,6 +58,7 @@ class GraphQLClientMojo: AbstractMojo() {
         val basePackage = this.basePackage!!
         val introspectionFile = this.introspectionFile!!
         val customTypeMap = this.customTypeMap
+        val nodePath = this.nodePath ?: System.getenv("PATH")
 
         val basePackageDirName = basePackage.replace('.', File.separatorChar)
         val sourceDirName = joinPath("src", "main", "graphql")
@@ -113,9 +117,10 @@ class GraphQLClientMojo: AbstractMojo() {
 
         // https://stackoverflow.com/a/25080297
         // https://stackoverflow.com/questions/32827329/how-to-get-the-full-path-of-an-executable-in-java-if-launched-from-windows-envi
-        val node = System.getenv("PATH")?.split(File.pathSeparator)?.map { File(it, "node") }?.find {
-            it.isFile && it.canExecute()
-        } ?: throw IllegalStateException("No 'node' executable found on PATH!")
+        val node = nodePath?.split(File.pathSeparator)
+            ?.map { File(it, "node") }
+            ?.find { it.isFile && it.canExecute() }
+            ?: throw IllegalStateException("No 'node' executable found on $nodePath!")
 
         log.info("Found node executable: ${node.absolutePath}")
 
